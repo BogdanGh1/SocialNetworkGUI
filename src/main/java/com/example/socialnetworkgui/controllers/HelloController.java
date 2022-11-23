@@ -1,4 +1,4 @@
-package com.example.socialnetworkgui;
+package com.example.socialnetworkgui.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

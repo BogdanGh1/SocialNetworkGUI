@@ -25,7 +25,7 @@ tasks.withType(JavaCompile) {
 
 application {
     mainModule = 'com.example.socialnetworkgui'
-    mainClass = 'com.example.socialnetworkgui.HelloApplication'
+    mainClass = 'com.example.socialnetworkgui.MainGUI'
 }
 
 javafx {
@@ -34,7 +34,7 @@ javafx {
 }
 
 dependencies {
-
+    runtimeOnly 'org.postgresql:postgresql:42.3.1'
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
