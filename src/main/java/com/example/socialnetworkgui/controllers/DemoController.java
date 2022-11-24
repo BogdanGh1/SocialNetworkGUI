@@ -40,6 +40,7 @@ public class DemoController implements Initializable {
     private TextField textFieldEmail;
     @FXML
     private TextField textFieldPassword;
+
     @FXML
     private void onAddUserClick() throws ValidationException, RepoException {
         String name = textFieldName.getText();
@@ -49,7 +50,7 @@ public class DemoController implements Initializable {
         textFieldName.setText("");
         textFieldEmail.setText("");
         textFieldPassword.setText("");
-        service.addUser(name,email,password);
+        service.addUser(name, email, password);
         reloadUserTableView();
     }
 

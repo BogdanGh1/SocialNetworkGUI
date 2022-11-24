@@ -16,10 +16,10 @@ import com.example.socialnetworkgui.validation.Validator;
 public class Main {
     public static void main(String[] args) throws ValidationException, RepoException {
         Validator<User> userValidator = new UserValidator();
-        Repository<Long, User> userRepository = new UserDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork","postgres","postgres",userValidator);
+        Repository<Long, User> userRepository = new UserDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres", "postgres", userValidator);
         Validator<Friendship> friendshipValidator = new FriendshipValidator();
-        Repository<Long, Friendship> friendshipRepository = new FriendshipDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork","postgres","postgres",friendshipValidator);
-        Service service = new Service(userRepository,friendshipRepository);
+        Repository<Long, Friendship> friendshipRepository = new FriendshipDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres", "postgres", friendshipValidator);
+        Service service = new Service(userRepository, friendshipRepository);
         UI ui = new UI(service);
         ui.run();
     }

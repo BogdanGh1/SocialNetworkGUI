@@ -1,0 +1,7 @@
+#createAccountButton{
+    -fx-background-color: transparent;
+}
+#createAccountButton:hover{
+    -fx-underline: true;
+
+}

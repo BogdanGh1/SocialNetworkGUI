@@ -16,7 +16,7 @@ public class FriendshipDbRepository implements Repository<Long, Friendship> {
     private final String url;
     private final String username;
     private final String password;
-    private Validator<Friendship> validator;
+    private final Validator<Friendship> validator;
 
     public FriendshipDbRepository(String url, String username, String password, Validator<Friendship> validator) {
         this.url = url;
@@ -37,7 +37,7 @@ public class FriendshipDbRepository implements Repository<Long, Friendship> {
             long idFriend = resultSet.getLong("idfriend");
             String friendsFrom = resultSet.getString("friendsfrom");
             LocalDateTime localDateTimeFriendsFrom = LocalDateTime.parse(friendsFrom, Utils.DATE_TIME_FORMATTER);
-            return new Friendship(id, idUser, idFriend,localDateTimeFriendsFrom);
+            return new Friendship(id, idUser, idFriend, localDateTimeFriendsFrom);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -59,7 +59,7 @@ public class FriendshipDbRepository implements Repository<Long, Friendship> {
                 long idFriend = resultSet.getLong("idfriend");
                 String friendsFrom = resultSet.getString("friendsfrom");
                 LocalDateTime localDateTimeFriendsFrom = LocalDateTime.parse(friendsFrom, Utils.DATE_TIME_FORMATTER);
-                Friendship friendship = new  Friendship(id, idUser, idFriend,localDateTimeFriendsFrom);
+                Friendship friendship = new Friendship(id, idUser, idFriend, localDateTimeFriendsFrom);
                 friendships.add(friendship);
             }
             return friendships;

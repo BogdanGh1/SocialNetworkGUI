@@ -50,9 +50,9 @@ public class CommunityProblemsSolver {
         return nr;
     }
 
-    private boolean visited(List <User> currentUsers, long id){
-        for (User user:currentUsers){
-            if(user.getId() == id)
+    private boolean visited(List<User> currentUsers, long id) {
+        for (User user : currentUsers) {
+            if (user.getId() == id)
                 return true;
         }
         return false;
@@ -60,10 +60,11 @@ public class CommunityProblemsSolver {
 
     /**
      * Finds the most sociable community
+     *
      * @param currentUsers - list of the users, mast contain only one user
      * @throws RepoException
      */
-    private void bkt(List <User> currentUsers) throws RepoException {
+    private void bkt(List<User> currentUsers) throws RepoException {
         if (currentUsers.size() > maxRoadLength) {
             maxRoadLength = currentUsers.size();
             mostSociableCommunity = new ArrayList<>();
@@ -72,17 +73,18 @@ public class CommunityProblemsSolver {
         User user = currentUsers.get(currentUsers.size() - 1);
         List<Friendship> friendships = user.getFriendshipList();
         for (Friendship fr : friendships) {
-            if(!visited(currentUsers,fr.getIdFriend())){
+            if (!visited(currentUsers, fr.getIdFriend())) {
                 currentUsers.add(userRepository.findOne(fr.getIdFriend()));
                 bkt(currentUsers);
                 currentUsers.remove(userRepository.findOne(fr.getIdFriend()));
             }
         }
     }
+
     public List<User> getMostSociableCommunity() throws RepoException {
         Iterable<User> users = userRepository.findAll();
         for (User user : users) {
-            List <User> currentUsers = new ArrayList<>();
+            List<User> currentUsers = new ArrayList<>();
             currentUsers.add(user);
             bkt(currentUsers);
         }

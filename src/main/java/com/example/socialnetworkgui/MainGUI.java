@@ -18,15 +18,21 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class MainGUI extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Demo.fxml"));
+        stage.setResizable(false);
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Views/LogIn.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Demo!");
+
+        //String css = Objects.requireNonNull(this.getClass().getResource("LogIn.css")).toExternalForm();
+        //scene.getStylesheets().add(css);
         stage.setScene(scene);
         stage.show();
+
     }
 
     public static void main(String[] args) {
