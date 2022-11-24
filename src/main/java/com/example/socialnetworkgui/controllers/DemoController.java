@@ -57,7 +57,7 @@ public class DemoController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Validator<User> userValidator = new UserValidator();
-        Repository<Long, User> userRepository = new UserDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres", "postgres", userValidator);
+        UserDbRepository userRepository = new UserDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres", "postgres", userValidator);
         Validator<Friendship> friendshipValidator = new FriendshipValidator();
         Repository<Long, Friendship> friendshipRepository = new FriendshipDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres", "postgres", friendshipValidator);
         service = new Service(userRepository, friendshipRepository);

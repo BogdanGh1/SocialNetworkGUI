@@ -5,19 +5,20 @@ import com.example.socialnetworkgui.domain.User;
 import com.example.socialnetworkgui.exceptions.RepoException;
 import com.example.socialnetworkgui.exceptions.ValidationException;
 import com.example.socialnetworkgui.infrastructure.Repository;
+import com.example.socialnetworkgui.infrastructure.database.UserDbRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class Service {
 
-    private final Repository<Long, User> userRepository;
+    private final UserDbRepository userRepository;
 
     private final Repository<Long, Friendship> friendshipRepository;
 
     private final CommunityProblemsSolver solver; 
 
-    public Service(Repository<Long, User> userRepository, Repository<Long, Friendship> friendshipRepository) {
+    public Service(UserDbRepository userRepository, Repository<Long, Friendship> friendshipRepository) {
         this.userRepository = userRepository;
         this.friendshipRepository = friendshipRepository;
         solver = new CommunityProblemsSolver(userRepository, friendshipRepository);
@@ -55,5 +56,9 @@ public class Service {
 
     public List<User> getMostSociableCommunity() throws RepoException {
         return solver.getMostSociableCommunity();
+    }
+
+    public User findUser(String email){
+        return userRepository.findOneByEmail(email);
     }
 }

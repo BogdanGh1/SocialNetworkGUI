@@ -17,7 +17,7 @@ public class UserDbRepository implements Repository<Long, User> {
     private final String url;
     private final String username;
     private final String password;
-    private Validator<User> validator;
+    private final Validator<User> validator;
 
     public UserDbRepository(String url, String username, String password, Validator<User> validator) {
         this.url = url;
@@ -44,6 +44,26 @@ public class UserDbRepository implements Repository<Long, User> {
         } catch (SQLException e) {
             e.printStackTrace();
             System.exit(1);
+        }
+        return null;
+    }
+
+    public User findOneByEmail(String email) {
+        String sql = "SELECT name,id,password FROM users where email = ?";
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, email);
+            ResultSet resultSet = ps.executeQuery();
+            resultSet.next();
+            String name = resultSet.getString("name");
+            Long id = resultSet.getLong("id");
+            String password = resultSet.getString("password");
+            User user = new User(id, name, email, password);
+            loadFriends(user);
+            return user;
+
+        } catch (SQLException e) {
+                e.printStackTrace();
         }
         return null;
     }

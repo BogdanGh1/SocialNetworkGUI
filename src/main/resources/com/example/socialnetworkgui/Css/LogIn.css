@@ -3,5 +3,10 @@
 }
 #createAccountButton:hover{
     -fx-underline: true;
+}
+#leftAnchorPane{
+    -fx-background-color: #7b91d1;
+}
+#createAccountButton{
 
 }

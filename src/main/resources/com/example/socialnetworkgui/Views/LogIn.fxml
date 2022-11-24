@@ -6,16 +6,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.socialnetworkgui.controllers.LogInController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="700.0" stylesheets="@../Css/LogIn.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.socialnetworkgui.controllers.LogInController">
    <left>
       <AnchorPane prefHeight="300.0" prefWidth="242.0" style="-fx-background-color: #7b91d1;" BorderPane.alignment="CENTER" />
    </left>
    <right>
-      <AnchorPane prefHeight="500.0" prefWidth="504.0" stylesheets="@../Css/LogIn.css" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="500.0" prefWidth="504.0" BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="142.0" layoutY="215.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" text="LogIn" />
-            <TextField layoutX="94.0" layoutY="86.0" prefHeight="26.0" prefWidth="240.0" promptText="Email" AnchorPane.leftAnchor="94.0" />
-            <PasswordField layoutX="98.0" layoutY="150.0" prefHeight="26.0" prefWidth="237.0" promptText="Password" />
+            <Button layoutX="142.0" layoutY="215.0" mnemonicParsing="false" onAction="#onLogInButtonClick" prefHeight="30.0" prefWidth="150.0" text="LogIn" />
+            <TextField fx:id="textFieldEmail" layoutX="94.0" layoutY="86.0" prefHeight="26.0" prefWidth="240.0" promptText="Email" AnchorPane.leftAnchor="94.0" />
+            <PasswordField fx:id="textFieldPassword" layoutX="98.0" layoutY="150.0" prefHeight="26.0" prefWidth="237.0" promptText="Password" />
             <Button fx:id="createAccountButton" layoutX="87.0" layoutY="51.0" mnemonicParsing="false" onAction="#onCreateAccountClick" text="Create Account" />
          </children>
       </AnchorPane>
