@@ -7,6 +7,9 @@
 #leftAnchorPane{
     -fx-background-color: #7b91d1;
 }
-#createAccountButton{
-
+#logInButton{
+    -fx-background-color: transparent;
+}
+#logInButton:hover{
+    -fx-underline: true;
 }

@@ -1,18 +1,23 @@
 package com.example.socialnetworkgui.domain;
 
+import com.example.socialnetworkgui.utils.FriendshipStatus;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Friendship extends Entity<Long> {
-    long idUser;
-    long idFriend;
-    LocalDateTime friendsFrom;
+    private final long idUser;
+    private final long idFriend;
+    private final LocalDateTime friendsFrom;
+    private FriendshipStatus status;
 
-    public Friendship(long id, long idUser, long idFriend, LocalDateTime friendsFrom) {
+    public Friendship(long id, long idUser, long idFriend, LocalDateTime friendsFrom,FriendshipStatus friendshipStatus) {
         super(id);
         this.idUser = idUser;
         this.idFriend = idFriend;
         this.friendsFrom = friendsFrom;
+        this.status = friendshipStatus;
+
     }
 
     public long getIdUser() {
@@ -25,6 +30,10 @@ public class Friendship extends Entity<Long> {
 
     public LocalDateTime getFriendsFrom() {
         return friendsFrom;
+    }
+
+    public FriendshipStatus getStatus() {
+        return status;
     }
 
     @Override

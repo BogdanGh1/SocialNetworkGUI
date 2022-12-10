@@ -1,10 +1,10 @@
 package com.example.socialnetworkgui;
 
-import com.example.socialnetworkgui.business.Service;
+import com.example.socialnetworkgui.business.FriendshipService;
+import com.example.socialnetworkgui.business.UserService;
 import com.example.socialnetworkgui.controllers.LogInController;
 import com.example.socialnetworkgui.domain.Friendship;
 import com.example.socialnetworkgui.domain.User;
-import com.example.socialnetworkgui.infrastructure.Repository;
 import com.example.socialnetworkgui.infrastructure.database.FriendshipDbRepository;
 import com.example.socialnetworkgui.infrastructure.database.UserDbRepository;
 import com.example.socialnetworkgui.validation.FriendshipValidator;
@@ -19,14 +19,16 @@ import java.io.IOException;
 
 public class MainGUI extends Application {
 
-    private Service service;
+    private UserService userService;
+    private FriendshipService friendshipService;
 
     private void createServices(){
         Validator<User> userValidator = new UserValidator();
         UserDbRepository userRepository = new UserDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres", "postgres", userValidator);
         Validator<Friendship> friendshipValidator = new FriendshipValidator();
-        Repository<Long, Friendship> friendshipRepository = new FriendshipDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres", "postgres", friendshipValidator);
-        service = new Service(userRepository, friendshipRepository);
+        FriendshipDbRepository friendshipRepository = new FriendshipDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres", "postgres", friendshipValidator);
+        userService = new UserService(userRepository);
+        friendshipService = new FriendshipService(friendshipRepository);
     }
     @Override
     public void start(Stage stage) throws IOException {
@@ -36,13 +38,13 @@ public class MainGUI extends Application {
         Scene scene = new Scene(loader.load());
 
         LogInController logInController = loader.getController();
-        logInController.setService(service);
-        logInController.setLogInStage(stage);
+        logInController.setUserService(userService);
+        logInController.setFriendshipService(friendshipService);
+        logInController.setMainStage(stage);
 
-        stage.setTitle("Demo!");
+        stage.setTitle("Social Network!");
         stage.setScene(scene);
         stage.show();
-
     }
 
     public static void main(String[] args) {
