@@ -1,6 +1,7 @@
 package com.example.socialnetworkgui.controllers;
 
 import com.example.socialnetworkgui.HelloApplication;
+import com.example.socialnetworkgui.business.FriendRequestService;
 import com.example.socialnetworkgui.business.FriendshipService;
 import com.example.socialnetworkgui.business.UserService;
 import com.example.socialnetworkgui.domain.User;
@@ -19,6 +20,7 @@ public class LogInController {
 
     private UserService userService;
     private FriendshipService friendshipService;
+    private FriendRequestService friendRequestService;
     @FXML
     private Stage mainStage;
     @FXML
@@ -57,15 +59,17 @@ public class LogInController {
 
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Views/Friends.fxml"));
             Scene scene = new Scene(loader.load());
-            mainStage.setScene(scene);
+
 
             FriendsController friendsController = loader.getController();
             friendsController.setUserService(userService);
             friendsController.setFriendshipService(friendshipService);
+            friendsController.setFriendRequestService(friendRequestService);
             friendsController.setUser(user);
             friendsController.setMainStage(mainStage);
+            friendsController.setLogInScene(mainStage.getScene());
             friendsController.init();
-
+            mainStage.setScene(scene);
         }
 
     }
@@ -75,6 +79,9 @@ public class LogInController {
     }
     public void setFriendshipService(FriendshipService friendshipService) {
         this.friendshipService = friendshipService;
+    }
+    public void setFriendRequestService(FriendRequestService friendRequestService){
+        this.friendRequestService = friendRequestService;
     }
 
     public void setMainStage(Stage stage) {

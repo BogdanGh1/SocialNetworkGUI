@@ -18,8 +18,8 @@
             <Button layoutX="-2.0" layoutY="299.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="294.0" styleClass="menuButtons" text="Friends" />
             <Button layoutX="-2.0" layoutY="363.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="293.0" styleClass="menuButtons" text="Events" />
             <Button layoutY="421.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="295.0" styleClass="menuButtons" text="Messages" />
-            <Button fx:id="logOutButton" layoutX="-2.0" layoutY="604.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="298.0" styleClass="menuButtons" text="Log Out" />
-            <Label fx:id="userNameLabel" alignment="CENTER" layoutX="55.0" layoutY="187.0" prefHeight="56.0" prefWidth="183.0" text="UserName" textAlignment="CENTER" />
+            <Button fx:id="logOutButton" layoutX="-2.0" layoutY="604.0" mnemonicParsing="false" onAction="#onLogOutButtonClick" prefHeight="54.0" prefWidth="298.0" styleClass="menuButtons" text="Log Out" />
+            <Label fx:id="userNameLabel" alignment="CENTER" layoutX="53.0" layoutY="103.0" prefHeight="56.0" prefWidth="183.0" text="UserName" textAlignment="CENTER" />
             <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="33.0" layoutY="304.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Images/best-friend-forever.png" />
@@ -35,31 +35,42 @@
                   <Image url="@../Images/chat.png" />
                </image>
             </ImageView>
+            <Label alignment="CENTER" layoutX="55.0" layoutY="39.0" prefHeight="56.0" prefWidth="183.0" text="Welcome Back" textAlignment="CENTER">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="43.0" fitWidth="42.0" layoutX="124.0" layoutY="167.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="36.0" layoutY="613.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/logout.png" />
+               </image>
+            </ImageView>
          </children></AnchorPane>
    </left>
    <right>
       <AnchorPane prefHeight="700.0" prefWidth="750.0" BorderPane.alignment="CENTER">
          <children>
-            <TableView layoutX="27.0" layoutY="73.0" prefHeight="249.0" prefWidth="322.0">
+            <TableView fx:id="sentRequestsTableView" layoutX="27.0" layoutY="73.0" prefHeight="249.0" prefWidth="322.0">
               <columns>
-                <TableColumn fx:id="sentRequestsNameColumn" prefWidth="113.33333969116211" text="Name" />
-                <TableColumn fx:id="sentRequestsDateColumn" prefWidth="107.46661376953125" text="Date" />
-                  <TableColumn prefWidth="107.46661376953125" text="Cancel" />
+                <TableColumn fx:id="sentRequestsNameColumn" prefWidth="62.400020599365234" text="Name" />
+                <TableColumn fx:id="sentRequestsDateColumn" prefWidth="147.99990844726562" text="Date" />
+                  <TableColumn fx:id="sentRequestsCancelColumn" minWidth="0.0" prefWidth="109.60005187988281" text="Cancel" />
               </columns>
             </TableView>
             <TableView fx:id="friendsTableView" layoutX="382.0" layoutY="79.0" prefHeight="525.0" prefWidth="307.0">
               <columns>
                 <TableColumn fx:id="friendsNameColumn" prefWidth="96.0" text="Name" />
-                <TableColumn prefWidth="125.5999755859375" text="Common Friends" />
-                  <TableColumn fx:id="friendsAddColumn" prefWidth="84.53350830078125" text="Add" />
+                <TableColumn fx:id="friendsCommonFriendsNumberColumn" prefWidth="125.5999755859375" text="Common Friends" />
+                  <TableColumn fx:id="friendsModifyColumn" prefWidth="84.53350830078125" text="Add" />
               </columns>
             </TableView>
-            <TableView layoutX="28.0" layoutY="386.0" prefHeight="272.0" prefWidth="320.0">
+            <TableView fx:id="receivedRequestsTableView" layoutX="28.0" layoutY="386.0" prefHeight="272.0" prefWidth="320.0">
                <columns>
-                  <TableColumn fx:id="receivedRequestsNameColumn" prefWidth="83.73333358764648" text="Name" />
-                  <TableColumn fx:id="receivedRequestsDateColumn" prefWidth="91.46670532226562" text="Date" />
-                  <TableColumn prefWidth="74.40000915527344" text="Accept" />
-                  <TableColumn prefWidth="71.9998779296875" text="Reject" />
+                  <TableColumn fx:id="receivedRequestsNameColumn" prefWidth="67.99999618530273" text="Name" />
+                  <TableColumn fx:id="receivedRequestsDateColumn" prefWidth="132.00003051757812" text="Date" />
+                  <TableColumn fx:id="receivedRequestsAcceptColumn" prefWidth="63.99995422363281" text="Accept" />
+                  <TableColumn fx:id="receivedRequestsRejectColumn" prefWidth="60.79998779296875" text="Reject" />
                </columns>
             </TableView>
             <Label alignment="CENTER" layoutX="62.0" layoutY="27.0" prefHeight="40.0" prefWidth="234.0" text="Sent requests">

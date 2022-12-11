@@ -1,16 +1,20 @@
 package com.example.socialnetworkgui.controllers;
 
+import com.example.socialnetworkgui.business.FriendRequestService;
 import com.example.socialnetworkgui.business.FriendshipService;
 import com.example.socialnetworkgui.business.UserService;
 import com.example.socialnetworkgui.domain.User;
+import com.example.socialnetworkgui.domain.dtos.FriendDTO;
+import com.example.socialnetworkgui.domain.dtos.ReceivedRequestDTO;
+import com.example.socialnetworkgui.domain.dtos.SentRequestDTO;
 import com.example.socialnetworkgui.exceptions.RepoException;
+import com.example.socialnetworkgui.exceptions.ValidationException;
 import com.example.socialnetworkgui.utils.FriendsTableState;
+import com.example.socialnetworkgui.utils.FriendshipStatus;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -22,16 +26,39 @@ public class FriendsController {
     private User user;
     private UserService userService;
     private FriendshipService friendshipService;
+    private FriendRequestService friendRequestService;
+    @FXML
+    private Scene logInScene;
     @FXML
     private Stage mainStage;
     @FXML
     private Label userNameLabel;
     @FXML
-    private TableView<User> friendsTableView;
+    private TableView<FriendDTO> friendsTableView;
     @FXML
-    private TableColumn<User, String> friendsNameColumn;
+    private TableColumn<FriendDTO, String> friendsNameColumn;
     @FXML
-    private TableColumn<User, String> friendsAddColumn;
+    private TableColumn<FriendDTO, Long> friendsCommonFriendsNumberColumn;
+    @FXML
+    private TableColumn<FriendDTO, Button> friendsModifyColumn;
+    @FXML
+    private TableView<SentRequestDTO> sentRequestsTableView;
+    @FXML
+    private TableColumn<SentRequestDTO, String> sentRequestsNameColumn;
+    @FXML
+    private TableColumn<SentRequestDTO, String> sentRequestsDateColumn;
+    @FXML
+    private TableColumn<SentRequestDTO, Button> sentRequestsCancelColumn;
+    @FXML
+    private TableView<ReceivedRequestDTO> receivedRequestsTableView;
+    @FXML
+    private TableColumn<ReceivedRequestDTO, String> receivedRequestsNameColumn;
+    @FXML
+    private TableColumn<ReceivedRequestDTO, String> receivedRequestsDateColumn;
+    @FXML
+    private TableColumn<ReceivedRequestDTO, Button> receivedRequestsAcceptColumn;
+    @FXML
+    private TableColumn<ReceivedRequestDTO, Button> receivedRequestsRejectColumn;
     @FXML
     private ToggleButton friendsToggleButton;
     @FXML
@@ -46,6 +73,13 @@ public class FriendsController {
         this.friendshipService = friendshipService;
     }
 
+    public void setFriendRequestService(FriendRequestService friendRequestService) {
+        this.friendRequestService = friendRequestService;
+    }
+
+    public void setLogInScene(Scene scene) {
+        this.logInScene = scene;
+    }
     public void setMainStage(Stage stage) {
         this.mainStage = stage;
     }
@@ -55,45 +89,128 @@ public class FriendsController {
     }
 
     public void init() {
-        friendsAddColumn.setText("Remove");
         userNameLabel.setText(user.getName());
-        friendsNameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("name"));
+        //friends table
+        friendsNameColumn.setResizable(false);
+        friendsCommonFriendsNumberColumn.setResizable(false);
+        friendsModifyColumn.setResizable(false);
+        friendsModifyColumn.setText("Remove");
+        friendsNameColumn.setCellValueFactory(new PropertyValueFactory<FriendDTO, String>("name"));
+        friendsCommonFriendsNumberColumn.setCellValueFactory(new PropertyValueFactory<FriendDTO, Long>("commonFriendsNumber"));
+        friendsModifyColumn.setCellValueFactory(new PropertyValueFactory<FriendDTO, Button>("button"));
         friendsTableState = FriendsTableState.FRIENDS;
         reloadFriendsTable(friendsTableState);
+        //sentRequests table
+        sentRequestsNameColumn.setResizable(false);
+        sentRequestsDateColumn.setResizable(false);
+        sentRequestsCancelColumn.setResizable(false);
+        sentRequestsNameColumn.setCellValueFactory(new PropertyValueFactory<SentRequestDTO, String>("name"));
+        sentRequestsDateColumn.setCellValueFactory(new PropertyValueFactory<SentRequestDTO, String>("date"));
+        sentRequestsCancelColumn.setCellValueFactory(new PropertyValueFactory<SentRequestDTO, Button>("button"));
+        reloadSentRequestsTable();
+        //receivedRequests table
+        receivedRequestsNameColumn.setResizable(false);
+        receivedRequestsDateColumn.setResizable(false);
+        receivedRequestsAcceptColumn.setResizable(false);
+        receivedRequestsRejectColumn.setResizable(false);
+        receivedRequestsNameColumn.setCellValueFactory(new PropertyValueFactory<ReceivedRequestDTO, String>("name"));
+        receivedRequestsDateColumn.setCellValueFactory(new PropertyValueFactory<ReceivedRequestDTO, String>("date"));
+        receivedRequestsAcceptColumn.setCellValueFactory(new PropertyValueFactory<ReceivedRequestDTO, Button>("acceptButton"));
+        receivedRequestsRejectColumn.setCellValueFactory(new PropertyValueFactory<ReceivedRequestDTO, Button>("rejectButton"));
+        reloadReceivedRequestsTable();
+
     }
 
-    private void reloadTables() {
-
-    }
 
     private void reloadFriendsTable(FriendsTableState friendsTableState) {
         try {
-            friendsTableView.getItems().setAll(parseFriendsList(friendsTableState));
+            List<FriendDTO> friendDTOS = parseFriendsList(friendsTableState);
+            for (FriendDTO friendDTO : friendDTOS) {
+                Button button = friendDTO.getButton();
+                if (friendsTableState.equals(FriendsTableState.FRIENDS)) {
+                    button.setText("Remove");
+                    button.setOnAction(event -> {
+                        System.out.println("Remove friendship between " + user.getName() + " and " + friendDTO.getName());
+                        friendRequestService.setFriendshipStatusBetween(user.getId(), friendDTO.getId(), FriendshipStatus.REJECTED);
+                        reloadFriendsTable(friendsTableState);
+                    });
+                } else {
+                    button.setText("Add");
+                    button.setOnAction(event -> {
+                        System.out.println(" Send request from " + user.getName() + " to " + friendDTO.getName());
+                        reloadFriendsTable(friendsTableState);
+                        try {
+                            friendshipService.addFriendship(user.getId(), friendDTO.getId());
+                        } catch (ValidationException | RepoException e) {
+                            throw new RuntimeException(e);
+                        }
+                        reloadSentRequestsTable();
+                        reloadFriendsTable(friendsTableState);
+                    });
+
+                }
+            }
+            friendsTableView.getItems().setAll(friendDTOS);
         } catch (RepoException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private List<User> parseFriendsList(FriendsTableState friendsTableState) throws RepoException {
+    private List<FriendDTO> parseFriendsList(FriendsTableState friendsTableState) throws RepoException {
         // parse and construct User datamodel list by looping your ResultSet rs
         // and return the list
-        List<User> usersAsList = new ArrayList<>();
-        Iterable<User> users;
+        Iterable<FriendDTO> friendsDTOS;
+        List<FriendDTO> friendDTOList = new ArrayList<>();
         if (friendsTableState == FriendsTableState.FRIENDS)
-            users = userService.getUserFriends(user);
-        else users = userService.getUserFriendSuggestions(user);
-        for (User user : users) {
-            usersAsList.add(user);
+            friendsDTOS = friendshipService.getFriends(user);
+        else friendsDTOS = friendshipService.getFriendSuggestions(user);
+        for (FriendDTO friendDTO : friendsDTOS) {
+            friendDTOList.add(friendDTO);
         }
-        return usersAsList;
+        return friendDTOList;
     }
 
-    private void reloadSentRequestsTable() {
 
+    private void reloadSentRequestsTable() {
+        List<SentRequestDTO> sentRequestDTOS = parseSentRequestsList();
+        for (SentRequestDTO sentRequestDTO : sentRequestDTOS) {
+            System.out.println(sentRequestDTO.getName());
+            Button button = sentRequestDTO.getButton();
+            button.setOnAction(event -> {
+                friendRequestService.remove(user.getId(), sentRequestDTO.getId());
+                reloadSentRequestsTable();
+                reloadFriendsTable(friendsTableState);
+            });
+        }
+        sentRequestsTableView.getItems().setAll(sentRequestDTOS);
+    }
+
+    private List<SentRequestDTO> parseSentRequestsList() {
+        return friendRequestService.getSentRequests(user);
     }
 
     private void reloadReceivedRequestsTable() {
+        List<ReceivedRequestDTO> receivedRequestDTOS = parseReceivedRequestsList();
+        for (ReceivedRequestDTO receivedRequestDTO : receivedRequestDTOS) {
+            System.out.println(receivedRequestDTO.getName());
+            Button acceptButton = receivedRequestDTO.getAcceptButton();
+            Button rejectButton = receivedRequestDTO.getRejectButton();
+            acceptButton.setOnAction(event -> {
+                friendRequestService.setFriendshipStatusBetween(user.getId(), receivedRequestDTO.getId(),FriendshipStatus.ACCEPTED);
+                reloadReceivedRequestsTable();
+                reloadFriendsTable(friendsTableState);
+            });
+            rejectButton.setOnAction(event -> {
+                friendRequestService.setFriendshipStatusBetween(user.getId(), receivedRequestDTO.getId(),FriendshipStatus.REJECTED);
+                reloadReceivedRequestsTable();
+                reloadFriendsTable(friendsTableState);
+            });
+        }
+        receivedRequestsTableView.getItems().setAll(receivedRequestDTOS);
+    }
 
+    private List<ReceivedRequestDTO> parseReceivedRequestsList() {
+        return friendRequestService.getReceivedRequests(user);
     }
 
     public void onToggleFriendsClick(ActionEvent actionEvent) {
@@ -101,15 +218,19 @@ public class FriendsController {
             friendsTableState = FriendsTableState.SUGGESTIONS;
             friendsToggleButton.setText("View your friends");
             friendsLabel.setText("Friends suggestions");
-            friendsAddColumn.setText("Add");
+            friendsModifyColumn.setText("Add");
         } else {
             friendsTableState = FriendsTableState.FRIENDS;
             friendsToggleButton.setText("View friend suggestions");
             friendsLabel.setText("Your friends");
-            friendsAddColumn.setText("Remove");
+            friendsModifyColumn.setText("Remove");
         }
         reloadFriendsTable(friendsTableState);
+    }
 
 
+    public void onLogOutButtonClick(ActionEvent actionEvent) {
+        System.out.println("Back to LogIn");
+        mainStage.setScene(logInScene);
     }
 }

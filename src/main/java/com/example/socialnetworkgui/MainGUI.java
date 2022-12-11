@@ -1,10 +1,12 @@
 package com.example.socialnetworkgui;
 
+import com.example.socialnetworkgui.business.FriendRequestService;
 import com.example.socialnetworkgui.business.FriendshipService;
 import com.example.socialnetworkgui.business.UserService;
 import com.example.socialnetworkgui.controllers.LogInController;
 import com.example.socialnetworkgui.domain.Friendship;
 import com.example.socialnetworkgui.domain.User;
+import com.example.socialnetworkgui.infrastructure.database.FriendRequestDbRepository;
 import com.example.socialnetworkgui.infrastructure.database.FriendshipDbRepository;
 import com.example.socialnetworkgui.infrastructure.database.UserDbRepository;
 import com.example.socialnetworkgui.validation.FriendshipValidator;
@@ -22,13 +24,17 @@ public class MainGUI extends Application {
     private UserService userService;
     private FriendshipService friendshipService;
 
+    private FriendRequestService friendRequestService;
+
     private void createServices(){
         Validator<User> userValidator = new UserValidator();
         UserDbRepository userRepository = new UserDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres", "postgres", userValidator);
         Validator<Friendship> friendshipValidator = new FriendshipValidator();
         FriendshipDbRepository friendshipRepository = new FriendshipDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres", "postgres", friendshipValidator);
+        FriendRequestDbRepository friendRequestDbRepository = new FriendRequestDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres", "postgres");
         userService = new UserService(userRepository);
         friendshipService = new FriendshipService(friendshipRepository);
+        friendRequestService = new FriendRequestService(friendRequestDbRepository);
     }
     @Override
     public void start(Stage stage) throws IOException {
@@ -40,9 +46,10 @@ public class MainGUI extends Application {
         LogInController logInController = loader.getController();
         logInController.setUserService(userService);
         logInController.setFriendshipService(friendshipService);
+        logInController.setFriendRequestService(friendRequestService);
         logInController.setMainStage(stage);
 
-        stage.setTitle("Social Network!");
+        stage.setTitle("THB Network!");
         stage.setScene(scene);
         stage.show();
     }

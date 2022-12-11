@@ -1,6 +1,7 @@
 package com.example.socialnetworkgui.controllers;
 
 import com.example.socialnetworkgui.HelloApplication;
+import com.example.socialnetworkgui.business.FriendRequestService;
 import com.example.socialnetworkgui.business.FriendshipService;
 import com.example.socialnetworkgui.business.UserService;
 import com.example.socialnetworkgui.domain.User;
@@ -23,6 +24,7 @@ public class CreateAccountController {
 
     private FriendshipService friendshipService;
 
+    private FriendRequestService friendRequestService;
     @FXML
     private Stage mainStage;
 
@@ -59,8 +61,10 @@ public class CreateAccountController {
                 FriendsController friendsController = loader.getController();
                 friendsController.setUserService(userService);
                 friendsController.setFriendshipService(friendshipService);
+                friendsController.setFriendRequestService(friendRequestService);
                 friendsController.setUser(user);
                 friendsController.setMainStage(mainStage);
+                friendsController.setLogInScene(logInScene);
                 friendsController.init();
 
             } catch (ValidationException | RepoException e) {
@@ -79,6 +83,9 @@ public class CreateAccountController {
     }
     public void setFriendshipService(FriendshipService friendshipService) {
         this.friendshipService = friendshipService;
+    }
+    public void setFriendRequestService(FriendRequestService friendRequestService){
+        this.friendRequestService = friendRequestService;
     }
     public void setMainStage(Stage stage) {
         this.mainStage = stage;

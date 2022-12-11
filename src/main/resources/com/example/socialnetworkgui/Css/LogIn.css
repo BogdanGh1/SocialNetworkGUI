@@ -13,3 +13,7 @@
 #logInButton:hover{
     -fx-underline: true;
 }
+#welcomeLabel{
+    -fx-alignment: center;
+    -fx-font-size: 24;
+}

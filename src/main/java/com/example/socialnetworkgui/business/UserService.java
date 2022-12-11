@@ -28,11 +28,4 @@ public class UserService {
     public User findUser(String email) {
         return userRepository.findOneByEmail(email);
     }
-
-    public Iterable<User> getUserFriends(User user) throws RepoException {
-        return userRepository.findFriends(user);
-    }
-    public Iterable<User> getUserFriendSuggestions(User user) throws RepoException {
-        return userRepository.findfriendSuggestions(user);
-    }
 }

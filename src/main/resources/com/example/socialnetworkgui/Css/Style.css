@@ -16,3 +16,9 @@
 #userNameLabel{
     -fx-font-size: 28;
 }
+#friendsModifyColumn{
+    -fx-alignment: center;
+}
+#sentRequestsCancelColumn{
+    -fx-alignment: center;
+}

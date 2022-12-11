@@ -19,6 +19,7 @@
             <PasswordField fx:id="textFieldPassword" layoutX="98.0" layoutY="150.0" prefHeight="26.0" prefWidth="237.0" promptText="Password" />
             <Button fx:id="createAccountButton" layoutX="236.0" layoutY="253.0" mnemonicParsing="false" onAction="#onCreateAccountClick" text="Create Account" />
             <Label layoutX="118.0" layoutY="257.0" prefHeight="18.0" prefWidth="130.0" text="Don't have an account?" />
+            <Label fx:id="welcomeLabel" layoutX="-2.0" layoutY="31.0" prefHeight="18.0" prefWidth="458.0" text="Welcome to the official THB Network" />
          </children>
       </AnchorPane>
    </right>
