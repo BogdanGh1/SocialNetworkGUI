@@ -1,5 +1,6 @@
 package com.example.socialnetworkgui.controllers;
 
+import com.example.socialnetworkgui.HelloApplication;
 import com.example.socialnetworkgui.business.FriendRequestService;
 import com.example.socialnetworkgui.business.FriendshipService;
 import com.example.socialnetworkgui.business.UserService;
@@ -13,11 +14,14 @@ import com.example.socialnetworkgui.utils.FriendsTableState;
 import com.example.socialnetworkgui.utils.FriendshipStatus;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +66,8 @@ public class FriendsController {
     @FXML
     private ToggleButton friendsToggleButton;
     @FXML
+    private ImageView logOutImageView;
+    @FXML
     private Label friendsLabel;
 
 
@@ -80,6 +86,7 @@ public class FriendsController {
     public void setLogInScene(Scene scene) {
         this.logInScene = scene;
     }
+
     public void setMainStage(Stage stage) {
         this.mainStage = stage;
     }
@@ -119,8 +126,11 @@ public class FriendsController {
         receivedRequestsRejectColumn.setCellValueFactory(new PropertyValueFactory<ReceivedRequestDTO, Button>("rejectButton"));
         reloadReceivedRequestsTable();
 
-    }
+        logOutImageView.setOnMouseClicked(event -> {
+            onLogOutButtonClick();
+        });
 
+    }
 
     private void reloadFriendsTable(FriendsTableState friendsTableState) {
         try {
@@ -196,12 +206,12 @@ public class FriendsController {
             Button acceptButton = receivedRequestDTO.getAcceptButton();
             Button rejectButton = receivedRequestDTO.getRejectButton();
             acceptButton.setOnAction(event -> {
-                friendRequestService.setFriendshipStatusBetween(user.getId(), receivedRequestDTO.getId(),FriendshipStatus.ACCEPTED);
+                friendRequestService.setFriendshipStatusBetween(user.getId(), receivedRequestDTO.getId(), FriendshipStatus.ACCEPTED);
                 reloadReceivedRequestsTable();
                 reloadFriendsTable(friendsTableState);
             });
             rejectButton.setOnAction(event -> {
-                friendRequestService.setFriendshipStatusBetween(user.getId(), receivedRequestDTO.getId(),FriendshipStatus.REJECTED);
+                friendRequestService.setFriendshipStatusBetween(user.getId(), receivedRequestDTO.getId(), FriendshipStatus.REJECTED);
                 reloadReceivedRequestsTable();
                 reloadFriendsTable(friendsTableState);
             });
@@ -213,6 +223,7 @@ public class FriendsController {
         return friendRequestService.getReceivedRequests(user);
     }
 
+    @FXML
     public void onToggleFriendsClick(ActionEvent actionEvent) {
         if (friendsTableState == FriendsTableState.FRIENDS) {
             friendsTableState = FriendsTableState.SUGGESTIONS;
@@ -229,8 +240,23 @@ public class FriendsController {
     }
 
 
-    public void onLogOutButtonClick(ActionEvent actionEvent) {
+    @FXML
+    public void onLogOutButtonClick() {
         System.out.println("Back to LogIn");
         mainStage.setScene(logInScene);
+    }
+    @FXML
+    public void onMessagesButtonClick() throws IOException {
+        System.out.println("To Messages");
+        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Views/Messages.fxml"));
+        Scene scene = new Scene(loader.load());
+        MessagesController messagesController = loader.getController();
+        messagesController.setFriendsScene(mainStage.getScene());
+        messagesController.setLogInScene(logInScene);
+        messagesController.setUserService(userService);
+        messagesController.setUser(user);
+        messagesController.setMainStage(mainStage);
+
+        mainStage.setScene(scene);
     }
 }

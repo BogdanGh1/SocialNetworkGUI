@@ -64,7 +64,8 @@ public class UserDbRepository implements Repository<Long, User> {
             return user;
 
         } catch (SQLException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+            System.out.println("Email not found");
         }
         return null;
     }

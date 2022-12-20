@@ -9,8 +9,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -27,8 +29,21 @@ public class LogInController {
     private TextField textFieldEmail;
     @FXML
     private PasswordField textFieldPassword;
+    @FXML
+    private Label emailErrorLabel;
+    @FXML
+    private Label passwordErrorLabel;
 
+    @FXML
+    public void onEmailTextFieldClicked(MouseEvent mouseEvent) {
+        emailErrorLabel.setText("");
+        passwordErrorLabel.setText("");
+    }
 
+    public void onPasswordTextFieldClicked(MouseEvent mouseEvent) {
+        emailErrorLabel.setText("");
+        passwordErrorLabel.setText("");
+    }
 
     @FXML
     public void onCreateAccountClick(ActionEvent actionEvent) throws IOException {
@@ -45,21 +60,19 @@ public class LogInController {
     }
 
     @FXML
-    public void onLogInButtonClick(ActionEvent actionEvent) throws IOException {
+    public void onLogInButtonClick(ActionEvent actionEvent) throws IOException, InterruptedException {
         String email = textFieldEmail.getText();
         String password = textFieldPassword.getText();
         textFieldEmail.setText("");
         textFieldPassword.setText("");
-
         User user = userService.findUser(email);
         if (user == null)
             return;
-        if (Objects.equals(user.getPassword(), password)){
+        if (Objects.equals(user.getPassword(), password)) {
             System.out.println("Logged In");
 
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Views/Friends.fxml"));
             Scene scene = new Scene(loader.load());
-
 
             FriendsController friendsController = loader.getController();
             friendsController.setUserService(userService);
@@ -71,20 +84,23 @@ public class LogInController {
             friendsController.init();
             mainStage.setScene(scene);
         }
-
     }
 
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
+
     public void setFriendshipService(FriendshipService friendshipService) {
         this.friendshipService = friendshipService;
     }
-    public void setFriendRequestService(FriendRequestService friendRequestService){
+
+    public void setFriendRequestService(FriendRequestService friendRequestService) {
         this.friendRequestService = friendRequestService;
     }
 
     public void setMainStage(Stage stage) {
         this.mainStage = stage;
     }
+
+
 }

@@ -1,0 +1,8 @@
+#messagesLabel{
+    -fx-alignment: center;
+    -fx-font-size: 35;
+}
+#conversationsLabel{
+    -fx-alignment: center;
+    -fx-font-size: 25;
+}
