@@ -52,30 +52,30 @@
     <right>
         <AnchorPane prefHeight="700.0" prefWidth="750.0" BorderPane.alignment="CENTER">
          <children>
-            <TableView layoutX="14.0" layoutY="58.0" prefHeight="506.0" prefWidth="473.0">
+            <TableView fx:id="messagesTableView" layoutX="14.0" layoutY="58.0" prefHeight="506.0" prefWidth="473.0">
               <columns>
-                <TableColumn prefWidth="68.7999849319458" text="From" />
-                <TableColumn prefWidth="285.6001739501953" text="Message" />
-                  <TableColumn prefWidth="131.19989013671875" text="Date" />
+                <TableColumn fx:id="fromTableColumn" prefWidth="68.7999849319458" text="From" />
+                <TableColumn fx:id="messageTableColumn" prefWidth="285.6001739501953" text="Message" />
+                  <TableColumn fx:id="dateTableColumn" prefWidth="115.99993896484375" text="Date" />
               </columns>
             </TableView>
-            <TableView layoutX="507.0" layoutY="58.0" prefHeight="466.0" prefWidth="182.0">
+            <TableView fx:id="conversationsTableView" layoutX="507.0" layoutY="58.0" onMouseClicked="#onConversationClick" prefHeight="456.0" prefWidth="182.0">
                <columns>
-                  <TableColumn prefWidth="158.40001220703124" text="Conversations" />
+                  <TableColumn fx:id="conversationsTableColumn" prefWidth="180.0001220703125" text="Conversations" />
                </columns>
             </TableView>
-            <TextArea layoutX="16.0" layoutY="582.0" prefHeight="104.0" prefWidth="473.0">
+            <TextArea fx:id="inputTextArea" layoutX="16.0" layoutY="582.0" prefHeight="104.0" prefWidth="474.0">
                <font>
                   <Font size="20.0" />
                </font></TextArea>
-            <ImageView fitHeight="87.0" fitWidth="171.0" layoutX="509.0" layoutY="590.0" pickOnBounds="true">
+            <ImageView fitHeight="87.0" fitWidth="171.0" layoutX="509.0" layoutY="590.0" onMouseClicked="#onSendTextImageViewClick" pickOnBounds="true">
                <image>
                   <Image url="@../Images/send.png" />
                </image>
             </ImageView>
             <Label fx:id="messagesLabel" layoutX="13.0" layoutY="3.0" prefHeight="37.0" prefWidth="488.0" text="Messages" />
             <Label fx:id="conversationsLabel" layoutX="505.0" layoutY="10.0" prefHeight="42.0" prefWidth="186.0" text="Conversations" />
-            <Button layoutX="508.0" layoutY="533.0" mnemonicParsing="false" prefHeight="13.0" prefWidth="182.0" text="New Conversation">
+            <Button layoutX="508.0" layoutY="525.0" mnemonicParsing="false" onAction="#onNewConversationButtonClick" prefHeight="16.0" prefWidth="182.0" text="New Conversation">
                <font>
                   <Font size="18.0" />
                </font>

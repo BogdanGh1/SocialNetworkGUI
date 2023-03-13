@@ -20,8 +20,8 @@
             <Button fx:id="createAccountButton" layoutX="242.0" layoutY="253.0" mnemonicParsing="false" onAction="#onCreateAccountClick" text="Create Account" />
             <Label layoutX="122.0" layoutY="257.0" prefHeight="18.0" prefWidth="130.0" text="Don't have an account?" />
             <Label fx:id="welcomeLabel" layoutX="-2.0" layoutY="31.0" prefHeight="18.0" prefWidth="458.0" text="Welcome to the official THB Network" />
-            <Label fx:id="emailErrorLabel" layoutX="94.0" layoutY="123.0" prefHeight="18.0" prefWidth="72.0" text="Invalid Email" textFill="#f40000" />
-            <Label fx:id="passwordErrorLabel" layoutX="94.0" layoutY="188.0" prefHeight="18.0" prefWidth="94.0" text="Wrong password" textFill="#f40000" />
+            <Label fx:id="emailErrorLabel" disable="true" layoutX="94.0" layoutY="123.0" prefHeight="18.0" prefWidth="72.0" text="Invalid Email" textFill="#f40000" />
+            <Label fx:id="passwordErrorLabel" disable="true" layoutX="94.0" layoutY="188.0" prefHeight="18.0" prefWidth="94.0" text="Wrong password" textFill="#f40000" />
          </children>
       </AnchorPane>
    </right>

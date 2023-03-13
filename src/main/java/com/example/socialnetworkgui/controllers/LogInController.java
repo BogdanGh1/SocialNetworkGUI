@@ -3,6 +3,7 @@ package com.example.socialnetworkgui.controllers;
 import com.example.socialnetworkgui.HelloApplication;
 import com.example.socialnetworkgui.business.FriendRequestService;
 import com.example.socialnetworkgui.business.FriendshipService;
+import com.example.socialnetworkgui.business.MessageService;
 import com.example.socialnetworkgui.business.UserService;
 import com.example.socialnetworkgui.domain.User;
 import javafx.event.ActionEvent;
@@ -23,6 +24,8 @@ public class LogInController {
     private UserService userService;
     private FriendshipService friendshipService;
     private FriendRequestService friendRequestService;
+
+    private MessageService messageService;
     @FXML
     private Stage mainStage;
     @FXML
@@ -78,6 +81,7 @@ public class LogInController {
             friendsController.setUserService(userService);
             friendsController.setFriendshipService(friendshipService);
             friendsController.setFriendRequestService(friendRequestService);
+            friendsController.setMessageService(messageService);
             friendsController.setUser(user);
             friendsController.setMainStage(mainStage);
             friendsController.setLogInScene(mainStage.getScene());
@@ -98,6 +102,9 @@ public class LogInController {
         this.friendRequestService = friendRequestService;
     }
 
+    public void setMessageService(MessageService messageService) {
+        this.messageService = messageService;
+    }
     public void setMainStage(Stage stage) {
         this.mainStage = stage;
     }

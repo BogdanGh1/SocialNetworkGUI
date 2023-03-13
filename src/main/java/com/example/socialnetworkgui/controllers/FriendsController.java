@@ -3,6 +3,7 @@ package com.example.socialnetworkgui.controllers;
 import com.example.socialnetworkgui.HelloApplication;
 import com.example.socialnetworkgui.business.FriendRequestService;
 import com.example.socialnetworkgui.business.FriendshipService;
+import com.example.socialnetworkgui.business.MessageService;
 import com.example.socialnetworkgui.business.UserService;
 import com.example.socialnetworkgui.domain.User;
 import com.example.socialnetworkgui.domain.dtos.FriendDTO;
@@ -31,6 +32,7 @@ public class FriendsController {
     private UserService userService;
     private FriendshipService friendshipService;
     private FriendRequestService friendRequestService;
+    private MessageService messageService;
     @FXML
     private Scene logInScene;
     @FXML
@@ -81,6 +83,10 @@ public class FriendsController {
 
     public void setFriendRequestService(FriendRequestService friendRequestService) {
         this.friendRequestService = friendRequestService;
+    }
+
+    public void setMessageService(MessageService messageService) {
+        this.messageService = messageService;
     }
 
     public void setLogInScene(Scene scene) {
@@ -184,7 +190,6 @@ public class FriendsController {
     private void reloadSentRequestsTable() {
         List<SentRequestDTO> sentRequestDTOS = parseSentRequestsList();
         for (SentRequestDTO sentRequestDTO : sentRequestDTOS) {
-            System.out.println(sentRequestDTO.getName());
             Button button = sentRequestDTO.getButton();
             button.setOnAction(event -> {
                 friendRequestService.remove(user.getId(), sentRequestDTO.getId());
@@ -202,7 +207,6 @@ public class FriendsController {
     private void reloadReceivedRequestsTable() {
         List<ReceivedRequestDTO> receivedRequestDTOS = parseReceivedRequestsList();
         for (ReceivedRequestDTO receivedRequestDTO : receivedRequestDTOS) {
-            System.out.println(receivedRequestDTO.getName());
             Button acceptButton = receivedRequestDTO.getAcceptButton();
             Button rejectButton = receivedRequestDTO.getRejectButton();
             acceptButton.setOnAction(event -> {
@@ -254,9 +258,11 @@ public class FriendsController {
         messagesController.setFriendsScene(mainStage.getScene());
         messagesController.setLogInScene(logInScene);
         messagesController.setUserService(userService);
+        messagesController.setFriendshipService(friendshipService);
+        messagesController.setMessageService(messageService);
         messagesController.setUser(user);
         messagesController.setMainStage(mainStage);
-
+        messagesController.init();
         mainStage.setScene(scene);
     }
 }
